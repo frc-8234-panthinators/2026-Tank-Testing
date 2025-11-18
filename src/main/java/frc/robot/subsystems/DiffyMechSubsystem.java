@@ -20,67 +20,60 @@ import static yams.mechanisms.SmartMechanism.gearbox;
 import static yams.mechanisms.SmartMechanism.gearing;
 
 public class DiffyMechSubsystem extends SubsystemBase{
-/*     private final SparkMax                   leftMotor  = new SparkMax(1, SparkLowLevel.MotorType.kBrushless);
-    private final SmartMotorControllerConfig leftConfig = new SmartMotorControllerConfig(this)
-            .withClosedLoopController(16, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
-            //.withSoftLimit(Degrees.of(-30), Degrees.of(100))
-            .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4, 5)))
-  //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
-            .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
-            .withTelemetry("LeftMotor", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
-            .withStatorCurrentLimit(Amps.of(40))
-            .withMotorInverted(false)
-            .withClosedLoopRampRate(Seconds.of(0.25))
-            .withOpenLoopRampRate(Seconds.of(0.25))
-            .withFeedforward(new ArmFeedforward(0, 0, 0, 0))
-            .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
-    private final SmartMotorController       leftSMC    = new SparkWrapper(leftMotor,
-            DCMotor.getNEO(1),
-            leftConfig);
-    private final SparkMax                   rightMotor  = new SparkMax(2, SparkLowLevel.MotorType.kBrushless);
-    private final SmartMotorControllerConfig rightConfig = new SmartMotorControllerConfig(this)
-            .withClosedLoopController(16, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
-            //.withSoftLimit(Degrees.of(-30), Degrees.of(100))
-            .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4, 5)))
-  //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
-            .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
-            .withTelemetry("RightMotor", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
-            .withStatorCurrentLimit(Amps.of(40))
-            .withMotorInverted(false)
-            .withClosedLoopRampRate(Seconds.of(0.25))
-            .withOpenLoopRampRate(Seconds.of(0.25))
-            .withFeedforward(new ArmFeedforward(0, 0, 0, 0))
-            .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
-    private final SmartMotorController       rightSMC    = new SparkWrapper(rightMotor,
-                                                                            DCMotor.getNEO(1),
-                                                                            rightConfig);
-    private final DifferentialMechanismConfig config = new DifferentialMechanismConfig(leftSMC, rightSMC)
+  private final SparkMax motorOne = new SparkMax(1, SparkLowLevel.MotorType.kBrushed);
+  private final SmartMotorControllerConfig oneConfig = new SmartMotorControllerConfig(this)
+      .withClosedLoopController(16, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
+      //.withSoftLimit(Degrees.of(-30), Degrees.of(100))
+      .withGearing(new MechanismGearing(GearBox.fromReductionStages(12.75)))
+      //.withExternalEncoder(armMotor.getAbsoluteEncoder())
+      .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
+      .withTelemetry("motorOne", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
+      .withStatorCurrentLimit(Amps.of(133))
+      .withMotorInverted(false)
+      .withClosedLoopRampRate(Seconds.of(0.25))
+      .withOpenLoopRampRate(Seconds.of(0.25))
+      .withFeedforward(new ArmFeedforward(0, 0, 0, 0))
+      .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
+  private final SmartMotorController SMCOne = new SparkWrapper(motorOne, DCMotor.getNEO(1), oneConfig);
+    private final SparkMax                   motorTwo  = new SparkMax(2, SparkLowLevel.MotorType.kBrushed);
+    private final SmartMotorControllerConfig twoConfig = new SmartMotorControllerConfig(this)
+    .withClosedLoopController(16, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
+    //.withSoftLimit(Degrees.of(-30), Degrees.of(100))
+    .withGearing(new MechanismGearing(GearBox.fromReductionStages(12.75)))
+    //.withExternalEncoder(armMotor.getAbsoluteEncoder())
+    .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
+    .withTelemetry("motorTwo", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
+    .withStatorCurrentLimit(Amps.of(133))
+    .withMotorInverted(false)
+    .withClosedLoopRampRate(Seconds.of(0.25))
+    .withOpenLoopRampRate(Seconds.of(0.25))
+    .withFeedforward(new ArmFeedforward(0, 0, 0, 0))
+    .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
+    private final SmartMotorController SMCTwo = new SparkWrapper(motorTwo, DCMotor.getNEO(1), twoConfig);
+    private final DifferentialMechanismConfig config = new DifferentialMechanismConfig(SMCOne, SMCTwo)
             .withStartingPosition(Degrees.of(90), Degrees.of(0))
-            .withMOI(Meters.of(0.3), Pounds.of(4))
             .withTelemetry("DiffyMech", SmartMotorControllerConfig.TelemetryVerbosity.HIGH);
     private final DifferentialMechanism diffy     = new DifferentialMechanism(config);
-  */
+  
     public DiffyMechSubsystem()
     {
     }
   
     public Command setAngle(Angle tilt, Angle twist) {
-      //return diffy.setPosition(tilt, twist);
-      return null;
+      return diffy.setPosition(tilt, twist);
     }
   
     public Command set(double tilt, double twist) {
-      //return diffy.set(tilt, twist);
-      return null;
+      return diffy.set(tilt, twist);
     }
   
     public void periodic()
     {
-      //diffy.updateTelemetry();
+      diffy.updateTelemetry();
     }
   
     public void simulationPeriodic()
     {
-      //diffy.simIterate();
+      diffy.simIterate();
     }
 }
